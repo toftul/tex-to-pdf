@@ -23,10 +23,16 @@ Download the script to your user `bin` folder:
    ```sh
    tex-to-pdf --keep-bbl
    ```
+   To compile only some files, give their names:
+   ```sh
+   tex-to-pdf main.tex
+   tex-to-pdf main.tex supplement.tex
+   tex-to-pdf paper/main.tex
+   ```
 
 ## How it works
 
-The script compiles only the files that contain `\documentclass`.  If a compilation fails, the script keeps the log file and shows the first errors. The exit code is 1.
+Without file names, the script compiles only the files in the current folder that contain `\documentclass`. With file names, it compiles only these files, in the folder of each file.  If a compilation fails, the script keeps the log file and shows the first errors. The exit code is 1.
 
 ## License
 
