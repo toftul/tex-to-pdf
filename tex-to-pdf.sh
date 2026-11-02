@@ -58,8 +58,11 @@ for ((i = 0; i < ${#files[@]}; i++)); do
     fi
 done
 
-# Clean only at the end: a file can read the .aux of another file (e.g. with xr)
+# Clean only at the end: a file can read the .aux of another file (e.g. with xr).
+# REVTeX writes footnotes in the bibliography to <name>Notes.bib, which latexmk
+# does not know about, so add it to the files to remove.
 for ((i = 0; i < ${#built[@]}; i++)); do
-    latexmk -cd "${modes[i]}" "$bib" -c "${built[i]}" &> /dev/null
+    latexmk -cd "${modes[i]}" "$bib" -e 'push @generated_exts, "%RNotes.bib"' \
+        -c "${built[i]}" &> /dev/null
 done
 exit $status
