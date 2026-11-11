@@ -59,10 +59,12 @@ for ((i = 0; i < ${#files[@]}; i++)); do
 done
 
 # Clean only at the end: a file can read the .aux of another file (e.g. with xr).
-# REVTeX writes footnotes in the bibliography to <name>Notes.bib, which latexmk
-# does not know about, so add it to the files to remove.
+# Some classes write files that latexmk does not know about, so add them to the
+# files to remove: REVTeX writes footnotes in the bibliography to <name>Notes.bib,
+# and achemso writes its bibliography settings to acs-<name>.bib.
 for ((i = 0; i < ${#built[@]}; i++)); do
-    latexmk -cd "${modes[i]}" "$bib" -e 'push @generated_exts, "%RNotes.bib"' \
+    latexmk -cd "${modes[i]}" "$bib" \
+        -e 'push @generated_exts, "%RNotes.bib", "acs-%R.bib"' \
         -c "${built[i]}" &> /dev/null
 done
 exit $status
